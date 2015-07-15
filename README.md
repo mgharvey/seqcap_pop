@@ -23,7 +23,7 @@ If you use scripts from this repository for your own research, please provide th
 USAGE
 --------
 
-Install Phyluce and dependencies following the instructions [here](http://phyluce.readthedocs.org/en/latest/index.html). The custom Python scripts required for this pipeline are in the "bin" folder, so also download those and put them in your project folder. Make sure you have plenty of available hard drive space (depending on read counts, you may need upwards of 2GB for each sample). You will probably want to organize the output of each step below into a series of folders. Within my project folder, I typically set up a series of output folders labeled with consecutive numbers followed by a brief text descriptor:
+Install Phyluce and dependencies following the instructions [here](http://phyluce.readthedocs.org/en/latest/index.html). You may also have to install the full version of [GATK](https://www.broadinstitute.org/gatk/) if Phyluce only comes with GATK-lite. The custom Python scripts required for this pipeline are in the "bin" folder, so also download those and put them in your project folder. Make sure you have plenty of available hard drive space (depending on read counts, you may need upwards of 2GB for each sample). You will probably want to organize the output of each step below into a series of folders. Within my project folder, I typically set up a series of output folders labeled with consecutive numbers followed by a brief text descriptor:
 
 - 1_raw-reads
 - 2_clean-reads
@@ -41,7 +41,7 @@ Install Phyluce and dependencies following the instructions [here](http://phyluc
 
 You can make all of these folder now.
 
-### 1.	Clean Raw Reads
+### 1.	Clean Raw Reads (Illumiprocessor)
 
 Follow the instructions in the [Illumiprocessor documentation](http://illumiprocessor.readthedocs.org/en/latest/index.html) to make a configuration (.conf) file. The command will look something like this:
 
@@ -50,7 +50,7 @@ illumiprocessor --input /path/to/1_raw-reads --output /path/to/2_clean-reads \
 	--config illumiprocessor.conf --cores 8
 ```
 
-### 2.	Assemble reads into contigs
+### 2.	Assemble reads into contigs (e.g., VelvetOptimiser)
 
 For population-level studies, I will typically use multiple individuals to make my assembly. This requires inputting reads from all of the individuals into the assembler simultaneously. You could also make your assembly from just a single individual (perhaps the one with the most reads, or the one which provides the best reference for some biological reason). 
 
@@ -118,8 +118,203 @@ Then do the same thing for individual 2 (and any additional individuals).
 
 ### 5.	Convert .sam file to .bam file (samtools)
 
+```
 samtools view -bS /path/to/5-mapping/Genus_species_1-aln.sam \
 	> /path/to/5-mapping/Genus_species_1-aln.bam
+```
 
-### 6.	
+Then do the same thing for individual 2 (and any additional individuals).
+
+### 6.	Clean the .bam file (Picard)
+
+This step soft-clips reads at the end of the reference contigs.
+
+```
+java -jar ~/anaconda/jar/CleanSam.jar \
+	I=/path/to/5-mapping/Genus_species_1-aln.bam \
+	O=/path/to/6_picard/Genus_species_1-aln_CL.bam \
+	VALIDATION_STRINGENCY=SILENT
+```
+
+Then do the same thing for individual 2 (and any additional individuals).
+
+### 7.	Add read groups (Picard)
+
+```
+java -Xmx2g -jar ~/anaconda/jar/AddOrReplaceReadGroups.jar \
+    I=/path/to/6_picard/Genus_species_1-aln_CL.bam \
+    O=/path/to/6_picard/Genus_species_1-aln_RG.bam \
+    SORT_ORDER=coordinate \
+    RGPL=illumina \
+    RGPU=TestXX \
+    RGLB=Lib1 \
+    RGID=Genus_species_1 \
+    RGSM=Genus_species_1 \
+    VALIDATION_STRINGENCY=LENIENT
+```
+
+Then do the same thing for individual 2 (and any additional individuals).
+
+### 8.	Mark PCR duplicate reads (Picard)
+
+```
+java -Xmx2g -jar ~/anaconda/jar/MarkDuplicates.jar \
+    I=/path/to/6_picard/Genus_species_1-aln_RG.bam \
+    O=/path/to/6_picard/Genus_species_1-aln_MD.bam \
+    METRICS_FILE=/path/to/6_picard/Genus_species_1.metrics \
+    MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=250 \
+    ASSUME_SORTED=true \
+    REMOVE_DUPLICATES=false
+```
+
+Then do the same thing for individual 2 (and any additional individuals).
+
+### 9.	Merge the BAM files across individuals within your species (Phyluce)
+    
+```
+java -Xmx2g -jar ~/anaconda/jar/MergeSamFiles.jar \
+    SO=coordinate \
+    AS=true \
+    I=/path/to/6_picard/Genus_species_1-aln_MD.bam \
+    I=/path/to/6_picard/Genus_species_2-aln_MD.bam \
+    O=/path/to/7_merge-bams/Genus_species.bam 
+```
+
+### 10.	Index the merged .bam file (samtools)
+
+```
+samtools index /Volumes/G-DRIVE/Amazon/7_merge-bams/Genus_species.bam 
+```
+
+### 11.	Create a dictionary from the reference contigs (Picard)
+
+```
+java -Xmx2g -jar ~/anaconda/pkgs/picard-1.106-0/jar/CreateSequenceDictionary.jar \
+    R=/path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    O=/path/to/4_match-contigs-to-probes/Genus_species.dict
+
+```
+
+### 12.	Index the reference (samtools)
+
+```
+samtools faidx /path/to/4_match-contigs-to-probes/Genus_species.fasta
+```
+
+### 13.	Call indels (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T RealignerTargetCreator \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/7_merge-bams/Genus_species.bam  \
+    --minReadsAtLocus 7 \
+    -o /path/to/8-GATK/Genus_species.intervals
+```
+
+### 13.	Call indels (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T RealignerTargetCreator \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/7_merge-bams/Genus_species.bam  \
+    --minReadsAtLocus 7 \
+    -o /path/to/8-GATK/Genus_species.intervals
+```
+
+### 13.	Realign indels (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T IndelRealigner \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/7-merge/Genus_species.bam  \
+    -targetIntervals /path/to/8-GATK/Genus_species.intervals \
+    -LOD 3.0 \
+    -o /path/to/8-GATK/Genus_species_RI.bam
+```
+
+
+    
+### 14.	Call SNPs (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T UnifiedGenotyper \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/8-GATK/Genus_species_RI.bam \
+    -gt_mode DISCOVERY \
+    -o /path/to/8-GATK/Genus_species_raw_SNPs.vcf \
+    -ploidy 2 \
+    -rf BadCigar
+```
+
+### 15.	Annotate SNPs (GATK)
+    
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T VariantAnnotator \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/8-GATK/Genus_species_RI.bam \
+    -G StandardAnnotation \
+    -V:variant,VCF /path/to/8-GATK/Genus_species_raw_SNPs.vcf \
+    -XA SnpEff \
+    -o /path/to/8-GATK/Genus_species_SNPs_annotated.vcf \
+    -rf BadCigar      
+```
+  
+### 16.	Annotate Indels (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T UnifiedGenotyper \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/8-GATK/Genus_species_RI.bam \
+    -gt_mode DISCOVERY \
+    -glm INDEL \
+    -o /path/to/8-GATK/Genus_species_SNPs_indels.vcf \
+    -rf BadCigar         
+```
+    
+### 17.	Mask indels (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T VariantFiltration \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -V /path/to/8-GATK/Genus_species_raw_SNPs.vcf \
+    --mask /path/to/8-GATK/Genus_species_SNPs_indels.vcf \
+    --maskExtension 5 \
+    --maskName InDel \
+    --clusterWindowSize 10 \
+    --filterExpression "MQ0 >= 4 && ((MQ0 / (1.0 * DP)) > 0.1)" \
+    --filterName "BadValidation" \
+    --filterExpression "QUAL < 30.0" \
+    --filterName "LowQual" \
+    --filterExpression "QD < 5.0" \
+    --filterName "LowVQCBD" \
+    -o /path/to/8-GATK/Genus_species_SNPs_no_indels.vcf  \
+    -rf BadCigar
+```
+    
+### 18.	Restrict to high-quality SNPs (bash)
+
+```
+cat /path/to/8-GATK/Genus_species_SNPs_no_indels.vcf | grep 'PASS\|^#' > /path/to/8-GATK/Genus_species_SNPs_pass-only.vcf 
+```
+
+### 19.	Read-backed phasing (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T ReadBackedPhasing \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -I /path/to/8-GATK/Genus_species_RI.bam \
+    --variant /path/to/8-GATK/Genus_species_SNPs_pass-only.vcf \
+    -L /path/to/8-GATK/Genus_species_SNPs_pass-only.vcf \
+    -o /path/to/8-GATK/Genus_species_SNPs_phased.vcf \
+    --phaseQualityThresh 20.0 \
+    -rf BadCigar
+```
 
