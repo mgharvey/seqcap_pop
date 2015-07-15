@@ -363,7 +363,7 @@ Then do the same thing for individual 2 (and any additional individuals).
 
 The final argument ("1") above filters out any alleles not supported by a particular number of reads. This can be increased in order to set a hard filter on the minimum number of reads for allele calls (generally not recommended).
 
-### 23.	Collate sequences from all individuals into files by UCE
+### 23.	Collate sequences from all individuals into files by UCE (custom script)
 
 ```
 python collate_sample_fastas_GATK.py \
@@ -380,7 +380,7 @@ python run_mafft.py \
 	/path/to/12_raw-alignments/Genus_species/
 ```
 
-### 25.	Process the alignments
+### 25.	Process the alignments (custom script)
 
 ```
 python process_mafft_alignments_GATK.py \
