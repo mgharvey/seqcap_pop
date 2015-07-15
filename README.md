@@ -41,7 +41,7 @@ You can make all of these folder now.
 
 ### 1.	Clean Raw Reads (Illumiprocessor)
 
-Follow the instructions in the [Illumiprocessor documentation](http://illumiprocessor.readthedocs.org/en/latest/index.html) to make a configuration (.conf) file. The command will look something like this:
+Follow the instructions in the [Illumiprocessor documentation](http://illumiprocessor.readthedocs.org/en/latest/index.html) to make a configuration (.conf) file. Then execute Illumiprocessor. The command will look something like this:
 
 ```
 illumiprocessor --input /path/to/1_raw-reads --output /path/to/2_clean-reads \
@@ -50,7 +50,7 @@ illumiprocessor --input /path/to/1_raw-reads --output /path/to/2_clean-reads \
 
 ### 2.	Assemble reads into contigs (e.g., VelvetOptimiser)
 
-For population-level studies, I will typically use multiple individuals to make my assembly. This requires inputting reads from all of the individuals into the assembler simultaneously. You could also make your assembly from just a single individual (perhaps the one with the most reads, or the one which provides the best reference for some biological reason). 
+For population-level studies, I will typically use multiple individuals to make my assembly. This requires inputting reads from all of the individuals into the assembler simultaneously. You could also make your assembly from just a single individual (perhaps the one with the most reads, or the one which provides the best reference for some biological reason). More individuals require more memory (I typically have to run this step on high-memory cluster nodes).
 
 Any of various assembly programs can be used for this step (see Phyluce documentation). I typically use VelvetOptimiser, which is not part of Phyluce, but can be obtained [here](http://bioinformatics.net.au/software.velvetoptimiser.shtml). An example VelvetOptimiser command is:
 
@@ -86,7 +86,9 @@ python extract_uce_bypass.py \
 
 ### 4.	Map reads to contigs (BWA)
 
-Next, we map the reads back to the contigs to obtain a pileup. For individual 1:
+Next, we map the reads back to the contigs to obtain a pileup. This is the most finicky step of the pipeline, as BWA often fails. I have 3 different versions of BWA installed, and if a sample repeatedly fails in one version, I switch to a different version (algorithms differ slightly across versions). I typically have success with BWA v.0.7.4, v.0.7.3, or 0.7.0. 
+
+For individual 1:
 
 ```
 bwa index -a is /path/to/4_match-contigs-to-probes/Genus_species.fasta
