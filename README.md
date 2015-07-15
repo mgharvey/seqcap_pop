@@ -25,19 +25,19 @@ USAGE
 
 Install Phyluce and dependencies following the instructions [here](http://phyluce.readthedocs.org/en/latest/index.html). The custom Python scripts required for this pipeline are in the "bin" folder, so also download those and put them in your project folder. Make sure you have plenty of available hard drive space (depending on read counts, you may need upwards of 2GB for each sample). You will probably want to organize the output of each step below into a series of folders. Within my project folder, I typically set up a series of output folders labeled with consecutive numbers followed by a brief text descriptor:
 
-1_raw-reads
-2_clean-reads
-3_velvet-output
-4_match-contigs-to-probes
-5_mapping
-6_picard
-7_merge-bams
-8_GATK
-9_SNP-tables
-10_sequences
-11_fasta-parts
-12_raw-alignments
-13_processed-phylip
+- 1_raw-reads
+- 2_clean-reads
+- 3_velvet-output
+- 4_match-contigs-to-probes
+- 5_mapping
+- 6_picard
+- 7_merge-bams
+- 8_GATK
+- 9_SNP-tables
+- 10_sequences
+- 11_fasta-parts
+- 12_raw-alignments
+- 13_processed-phylip
 
 You can make all of these folder now.
 
