@@ -82,21 +82,21 @@ bwa index -a is /path/to/4_match-contigs-to-probes/Genus_species.fasta
 
 ```
 bwa aln /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ1.fastq.gz \ 
-> /path/to/5-mapping/Genus_species_1_read1.sa.sai
+	/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ1.fastq.gz \ 
+	> /path/to/5-mapping/Genus_species_1_read1.sa.sai
 ```
 
 ```
 bwa aln /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ2.fastq.gz  \
-> /path/to/5-mapping/Genus_species_1_read2.sa.sai
+	/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ2.fastq.gz  \
+	> /path/to/5-mapping/Genus_species_1_read2.sa.sai
 ```
 
 ```
 bwa sampe /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-/path/to/5-mapping/Genus_species_1_read1.sa.sai /path/to/5-mapping/Genus_species_1_read2.sa.sai \
-/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ1.fastq.gz \
-/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ2.fastq.gz \
-> /path/to/5-mapping/Genus_species_1-aln.sam
+	/path/to/5-mapping/Genus_species_1_read1.sa.sai /path/to/5-mapping/Genus_species_1_read2.sa.sai \
+	/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ1.fastq.gz \
+	/path/to/2_clean-reads/Genus_species_1/split-adapter-quality-trimmed/Genus_species_1-READ2.fastq.gz \
+	> /path/to/5-mapping/Genus_species_1-aln.sam
 ```
 
