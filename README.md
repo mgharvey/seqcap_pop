@@ -214,18 +214,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -o /path/to/8_GATK/Genus_species.intervals
 ```
 
-### 13.	Call indels (GATK)
-
-```
-java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
-    -T RealignerTargetCreator \
-    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-    -I /path/to/7_merge-bams/Genus_species.bam  \
-    --minReadsAtLocus 7 \
-    -o /path/to/8_GATK/Genus_species.intervals
-```
-
-### 13.	Realign indels (GATK)
+### 14.	Realign indels (GATK)
 
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -236,10 +225,8 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -LOD 3.0 \
     -o /path/to/8_GATK/Genus_species_RI.bam
 ```
-
-
     
-### 14.	Call SNPs (GATK)
+### 15.	Call SNPs (GATK)
 
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -252,7 +239,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -rf BadCigar
 ```
 
-### 15.	Annotate SNPs (GATK)
+### 16.	Annotate SNPs (GATK)
     
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -266,7 +253,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -rf BadCigar      
 ```
   
-### 16.	Annotate Indels (GATK)
+### 17.	Annotate Indels (GATK)
 
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -279,7 +266,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -rf BadCigar         
 ```
     
-### 17.	Mask indels (GATK)
+### 18.	Mask indels (GATK)
 
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -300,13 +287,15 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -rf BadCigar
 ```
     
-### 18.	Restrict to high-quality SNPs (bash)
+### 19.	Restrict to high-quality SNPs (bash)
 
 ```
 cat /path/to/8_GATK/Genus_species_SNPs_no_indels.vcf | grep 'PASS\|^#' > /path/to/8_GATK/Genus_species_SNPs_pass-only.vcf 
 ```
 
-### 19.	Read-backed phasing (GATK)
+### 20.	Read-backed phasing (GATK)
+
+The output of this step is a .vcf file containing the final set of phased SNPs for all individuals. This can then be used to produce input files for SNP-based analyses. The subsequent two steps (21 and 22) also produce output containing these same SNPs, but separated into a file for each individual. 
 
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -320,7 +309,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -rf BadCigar
 ```
 
-### 20.	Make a vcf for each sample (GATK)
+### 21.	Make a vcf for each sample (GATK)
 
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -334,7 +323,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 
 Then do the same thing for individual 2 (and any additional individuals).
 
-### 21.	Make a table of phased SNPs for each sample (GATK)
+### 22.	Make a table of phased SNPs for each sample (GATK)
    
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
@@ -348,7 +337,9 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 
 Then do the same thing for individual 2 (and any additional individuals).
 
-### 22.	Add phased SNPs to reference and optionally filter (custom script)
+### 23.	Add phased SNPs to reference and optionally filter (custom script)
+
+Because GATK does not output sequences or SNP calls for invariant sites, we need to add the SNPs back into the reference sequences if we want alignments. This is not optimal, as sequence data will be present at invariant sites even if no reads inform that site for a given individual. However, this is currently the only way I can find to take advantage of read-backed phasing and get the phased calls into alignment format. Freebayes allows output of invariant and variant sites, which can then easily be used to produce complete alignments. However, the phasing options in Freebayes are much more limited, and there is no obvious way to use Freebayes to output data once SNPs have been phased in GATK. Improvement needed here!
 
 ```
 python add_phased_snps_to_seqs_filter.py \
@@ -363,7 +354,7 @@ Then do the same thing for individual 2 (and any additional individuals).
 
 The final argument ("1") above filters out any alleles not supported by a particular number of reads. This can be increased in order to set a hard filter on the minimum number of reads for allele calls (generally not recommended).
 
-### 23.	Collate sequences from all individuals into files by UCE (custom script)
+### 24.	Collate sequences from all individuals into files by UCE (custom script)
 
 ```
 python collate_sample_fastas_GATK.py \
@@ -372,7 +363,9 @@ python collate_sample_fastas_GATK.py \
 	sequences.txt
 ```
 
-### 24.	Align the sequences (MAFFT)
+### 25.	Align the sequences (MAFFT)
+
+Although the sequences should line up, this serves to guarantee that there won't be any issues.
 
 ```
 python run_mafft.py \
@@ -380,7 +373,9 @@ python run_mafft.py \
 	/path/to/12_raw-alignments/Genus_species/
 ```
 
-### 25.	Process the alignments (custom script)
+### 26.	Process the alignments (custom script)
+
+This makes phylip alignments from the raw fasta files from MAFFT.
 
 ```
 python process_mafft_alignments_GATK.py \
@@ -388,4 +383,3 @@ python process_mafft_alignments_GATK.py \
 	/path/to/13_processed-phylip/Genus_species
 ```
 
-This makes phylip alignments from the raw fasta files from MAFFT.
