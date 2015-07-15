@@ -7,6 +7,8 @@ seqcap_pop is a series of commands and scripts for processing sequence capture d
 - Oswald et al. in prep.
 - Sanchez et al. in prep. 
 
+In addition to the pre-existing code from Phyluce and associated tools, we include additional scripts in the "bin" folder that were authored by Michael Harvey, Brant Faircloth, and Graham Derryberry.
+
 LICENSE
 -------
 
@@ -209,7 +211,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
     -I /path/to/7_merge-bams/Genus_species.bam  \
     --minReadsAtLocus 7 \
-    -o /path/to/8-GATK/Genus_species.intervals
+    -o /path/to/8_GATK/Genus_species.intervals
 ```
 
 ### 13.	Call indels (GATK)
@@ -220,7 +222,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
     -I /path/to/7_merge-bams/Genus_species.bam  \
     --minReadsAtLocus 7 \
-    -o /path/to/8-GATK/Genus_species.intervals
+    -o /path/to/8_GATK/Genus_species.intervals
 ```
 
 ### 13.	Realign indels (GATK)
@@ -230,9 +232,9 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T IndelRealigner \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
     -I /path/to/7-merge/Genus_species.bam  \
-    -targetIntervals /path/to/8-GATK/Genus_species.intervals \
+    -targetIntervals /path/to/8_GATK/Genus_species.intervals \
     -LOD 3.0 \
-    -o /path/to/8-GATK/Genus_species_RI.bam
+    -o /path/to/8_GATK/Genus_species_RI.bam
 ```
 
 
@@ -243,9 +245,9 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T UnifiedGenotyper \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-    -I /path/to/8-GATK/Genus_species_RI.bam \
+    -I /path/to/8_GATK/Genus_species_RI.bam \
     -gt_mode DISCOVERY \
-    -o /path/to/8-GATK/Genus_species_raw_SNPs.vcf \
+    -o /path/to/8_GATK/Genus_species_raw_SNPs.vcf \
     -ploidy 2 \
     -rf BadCigar
 ```
@@ -256,11 +258,11 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T VariantAnnotator \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-    -I /path/to/8-GATK/Genus_species_RI.bam \
+    -I /path/to/8_GATK/Genus_species_RI.bam \
     -G StandardAnnotation \
-    -V:variant,VCF /path/to/8-GATK/Genus_species_raw_SNPs.vcf \
+    -V:variant,VCF /path/to/8_GATK/Genus_species_raw_SNPs.vcf \
     -XA SnpEff \
-    -o /path/to/8-GATK/Genus_species_SNPs_annotated.vcf \
+    -o /path/to/8_GATK/Genus_species_SNPs_annotated.vcf \
     -rf BadCigar      
 ```
   
@@ -270,10 +272,10 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T UnifiedGenotyper \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-    -I /path/to/8-GATK/Genus_species_RI.bam \
+    -I /path/to/8_GATK/Genus_species_RI.bam \
     -gt_mode DISCOVERY \
     -glm INDEL \
-    -o /path/to/8-GATK/Genus_species_SNPs_indels.vcf \
+    -o /path/to/8_GATK/Genus_species_SNPs_indels.vcf \
     -rf BadCigar         
 ```
     
@@ -283,8 +285,8 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T VariantFiltration \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-    -V /path/to/8-GATK/Genus_species_raw_SNPs.vcf \
-    --mask /path/to/8-GATK/Genus_species_SNPs_indels.vcf \
+    -V /path/to/8_GATK/Genus_species_raw_SNPs.vcf \
+    --mask /path/to/8_GATK/Genus_species_SNPs_indels.vcf \
     --maskExtension 5 \
     --maskName InDel \
     --clusterWindowSize 10 \
@@ -294,14 +296,14 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     --filterName "LowQual" \
     --filterExpression "QD < 5.0" \
     --filterName "LowVQCBD" \
-    -o /path/to/8-GATK/Genus_species_SNPs_no_indels.vcf  \
+    -o /path/to/8_GATK/Genus_species_SNPs_no_indels.vcf  \
     -rf BadCigar
 ```
     
 ### 18.	Restrict to high-quality SNPs (bash)
 
 ```
-cat /path/to/8-GATK/Genus_species_SNPs_no_indels.vcf | grep 'PASS\|^#' > /path/to/8-GATK/Genus_species_SNPs_pass-only.vcf 
+cat /path/to/8_GATK/Genus_species_SNPs_no_indels.vcf | grep 'PASS\|^#' > /path/to/8_GATK/Genus_species_SNPs_pass-only.vcf 
 ```
 
 ### 19.	Read-backed phasing (GATK)
@@ -310,11 +312,80 @@ cat /path/to/8-GATK/Genus_species_SNPs_no_indels.vcf | grep 'PASS\|^#' > /path/t
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T ReadBackedPhasing \
     -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
-    -I /path/to/8-GATK/Genus_species_RI.bam \
-    --variant /path/to/8-GATK/Genus_species_SNPs_pass-only.vcf \
-    -L /path/to/8-GATK/Genus_species_SNPs_pass-only.vcf \
-    -o /path/to/8-GATK/Genus_species_SNPs_phased.vcf \
+    -I /path/to/8_GATK/Genus_species_RI.bam \
+    --variant /path/to/8_GATK/Genus_species_SNPs_pass-only.vcf \
+    -L /path/to/8_GATK/Genus_species_SNPs_pass-only.vcf \
+    -o /path/to/8_GATK/Genus_species_SNPs_phased.vcf \
     --phaseQualityThresh 20.0 \
     -rf BadCigar
 ```
 
+### 20.	Make a vcf for each sample (GATK)
+
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -T SelectVariants \
+    --variant /path/to/8_GATK/Genus_species_SNPs_phased.vcf \
+    -o /path/to/8_GATK/Genus_species_1_SNPs.vcf \
+    -sn Genus_species_1 \
+    -rf BadCigar
+```
+
+Then do the same thing for individual 2 (and any additional individuals).
+
+### 21.	Make a table of phased SNPs for each sample (GATK)
+   
+```
+java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
+    -T VariantsToTable \
+    -R /path/to/4_match-contigs-to-probes/Genus_species.fasta \
+    -V /path/to/8_GATK/Genus_species_1_SNPs.vcf \
+    -F CHROM -F POS -F QUAL -GF GT -GF DP -GF HP -GF AD \
+    -o /path/to/9_SNP-tables/Genus_species_1_SNPs_phased-table.txt \
+    -rf BadCigar
+```
+
+Then do the same thing for individual 2 (and any additional individuals).
+
+### 22.	Add phased SNPs to reference and optionally filter (custom script)
+
+```
+python add_phased_snps_to_seqs_filter.py \
+	/path/to/4_match-contigs-to-probes/Genus_species.fasta \
+	/path/to/9_SNP-tables/Genus_species_1_SNPs_phased-table.txt \
+	/path/to/10_sequences/Genus_species \
+	Genus_species_1_sequences.txt \
+	1
+```
+
+Then do the same thing for individual 2 (and any additional individuals).
+
+The final argument ("1") above filters out any alleles not supported by a particular number of reads. This can be increased in order to set a hard filter on the minimum number of reads for allele calls (generally not recommended).
+
+### 23.	Collate sequences from all individuals into files by UCE
+
+```
+python collate_sample_fastas_GATK.py \
+	/path/to/10_sequences/Genus_species/ \
+	/path/to/11_fasta-parts/Genus_species/ \
+	sequences.txt
+```
+
+### 24.	Align the sequences (MAFFT)
+
+```
+python run_mafft.py \
+	/path/to/11_fasta-parts/Genus_species/ \
+	/path/to/12_raw-alignments/Genus_species/
+```
+
+### 25.	Process the alignments
+
+```
+python process_mafft_alignments_GATK.py \
+	/path/to/12_raw-alignments/Genus_species \
+	/path/to/13_processed-phylip/Genus_species
+```
+
+This makes phylip alignments from the raw fasta files from MAFFT.
