@@ -21,7 +21,7 @@ If you use scripts from this repository for your own research, please provide th
 USAGE
 --------
 
-Install Phyluce and dependencies following the instructions [here](http://phyluce.readthedocs.org/en/latest/index.html). You may also have to install the full version of [GATK](https://www.broadinstitute.org/gatk/) if Phyluce only comes with GATK-lite. The custom Python scripts required for this pipeline are in the "bin" folder, so also download those and put them in your project folder. Make sure you have plenty of available hard drive space (depending on read counts, you may need upwards of 2GB for each sample). You will probably want to organize the output of each step below into a series of folders. Within my project folder, I typically set up a series of output folders labeled with consecutive numbers followed by a brief text descriptor:
+Install Phyluce and dependencies following the instructions [here](http://phyluce.readthedocs.org/en/latest/index.html). The custom Python scripts required for this pipeline are in the "bin" folder, so also download those and put them in your project folder. Make sure you have plenty of available hard drive space (depending on read counts, you may need upwards of 2GB for each sample). You will probably want to organize the output of each step below into a series of folders. Within my project folder, I typically set up a series of output folders labeled with consecutive numbers followed by a brief text descriptor:
 
 - 1_raw-reads
 - 2_clean-reads
@@ -50,7 +50,7 @@ illumiprocessor --input /path/to/1_raw-reads --output /path/to/2_clean-reads \
 
 ### 2.	Assemble reads into contigs (e.g., VelvetOptimiser)
 
-For population-level studies, I will typically use multiple individuals to make my assembly. This requires inputting reads from all of the individuals into the assembler simultaneously. You could also make your assembly from just a single individual (perhaps the one with the most reads, or the one which provides the best reference for some biological reason). More individuals require more memory (I typically have to run this step on high-memory cluster nodes).
+For population-level studies, I will typically use multiple individuals to make my assembly. This requires inputting reads from all of the individuals into the assembler simultaneously. You could also make your assembly from just a single individual (perhaps the one with the most reads, or the one which provides the best reference for some biological reason). More individuals require more memory (I typically have to run this step on high-memory cluster nodes). It may be worth trying different strategies for reference assembly and comparing your assemblies to determine which method produces the best results (most contigs mapping to probes, longest contigs, etc.).
 
 Any of various assembly programs can be used for this step (see Phyluce documentation). I typically use VelvetOptimiser, which is not part of Phyluce, but can be obtained [here](http://bioinformatics.net.au/software.velvetoptimiser.shtml). An example VelvetOptimiser command is:
 
@@ -385,7 +385,7 @@ python process_mafft_alignments_GATK.py \
 
 For programs that don't accept .vcf files of SNPs or phylip sequence alignments, there are some additional scripts in the "bin" folder that permit data format conversion (I will be adding more here as I write them):
 
-- **structure_from_vcf.py** should produce files of all SNPs containing linkage information for use in STRUCTURE and fastSTRUCTURE
+- **structure_from_vcf.py** should produce files of all SNPs containing linkage information for use in STRUCTURE and fastSTRUCTURE.
 
 ```
 python structure_from_vcf.py \
