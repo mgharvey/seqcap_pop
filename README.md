@@ -86,7 +86,7 @@ python extract_uce_bypass.py \
 
 ### 4.	Map reads to contigs (BWA)
 
-Next, we map the reads back to the contigs to obtain a pileup. This is the most finicky step of the pipeline, as BWA often fails. I have 3 different versions of BWA installed, and if a sample repeatedly fails in one version, I switch to a different version (algorithms differ slightly across versions). I typically have success with BWA v.0.7.4, v.0.7.3, or 0.7.0. 
+Next, we map the reads back to the contigs to obtain a pileup. This is the most finicky step of the pipeline, as BWA often fails. I have 3 different versions of BWA installed, and if a sample repeatedly fails in one version, I switch to a different version (algorithms differ slightly across versions). I typically have success with BWA 0.7.4, 0.7.3, or 0.7.0. 
 
 For individual 1:
 
