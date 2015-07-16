@@ -381,9 +381,11 @@ python process_mafft_alignments_GATK.py \
 	/path/to/13_processed-phylip/Genus_species
 ```
 
+### File format conversion
+
 For programs that don't accept .vcf files of SNPs or phylip sequence alignments, there are some additional scripts in the "bin" folder that permit data format conversion (I will be adding more here as I write them):
 
-- structure_from_vcf.py should produce files of all SNPs containing linkage information for use in STRUCTURE and fastSTRUCTURE
+- **structure_from_vcf.py** should produce files of all SNPs containing linkage information for use in STRUCTURE and fastSTRUCTURE
 
 ```
 python structure_from_vcf.py \
