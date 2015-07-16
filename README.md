@@ -39,7 +39,7 @@ Install Phyluce and dependencies following the instructions [here](http://phyluc
 
 You can make all of these folder now.
 
-### 1.	Clean Raw Reads (Illumiprocessor)
+### 1.	Clean raw reads (Illumiprocessor)
 
 Follow the instructions in the [Illumiprocessor documentation](http://illumiprocessor.readthedocs.org/en/latest/index.html) to make a configuration (.conf) file. Then execute Illumiprocessor. The command will look something like this:
 
