@@ -9,7 +9,9 @@ using the seqcap_pop pipeline (https://github.com/mgharvey/seqcap_pop). It inclu
 information (the distance between SNPs at the same locus) and phase probabilities in cases
 where multiple SNPs fall on the same locus. The phase line indicates the probability that 
 the phase is correct relative to the previous site (use set MARKOVPHASE=1) for a given 
-individual.
+individual. Sometimes STRUCTURE doesn't recognize the newline characters from this script, 
+but if you copy and paste the text from the file into an existing text file this often 
+corrects the issue.
 
 """
 
@@ -76,7 +78,7 @@ def main():
 				calls = ind_parts[0].split('/')
 				if '.' in calls:
 					genotypes.append(["-9", "-9"])					
-					phases.append("-9")	
+					phases.append("0.5")	
 				else:
 					if "HP" not in parts[8]:
 						genotypes.append([calls[0], calls[1]])
@@ -109,7 +111,6 @@ def main():
 		for genotype in genotypes:			
 			outfile.write("{0}\t".format(genotype[1]))
 		outfile.write("\n")		
-		outfile.write("{0}\t".format(this_ind))
 		for phase in phases:
 			outfile.write("{0}\t".format(phase))
 		outfile.write("\n")	
