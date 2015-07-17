@@ -392,3 +392,11 @@ python structure_from_vcf.py \
 	/path/to/8_GATK/Genus_species_SNPs_phased.vcf \
 	/path/to/desired/output/directory/Genus_species_STRUCTURE.txt
 ```
+
+- **gphocs_from_phy.py** reformats alignments for input into [G-PhoCS](http://compgen.bscb.cornell.edu/GPhoCS/).
+
+```
+python gphocs_from_phy.py \
+	/path/to/13_processed-phylip \
+	/path/to/desired/output/directory/Genus_species_GPHOCS.txt
+```
