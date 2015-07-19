@@ -335,7 +335,7 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
 
 Then do the same thing for individual 2 (and any additional individuals).
 
-### 23.	Add phased SNPs to reference and optionally filter (custom script)
+### 23.	Add phased SNPs to reference and optionally filter (seqcap_pop script)
 
 Because GATK does not output sequences or SNP calls for invariant sites, we need to add the SNPs back into the reference sequences if we want alignments. This is not optimal, as sequence data will be present at invariant sites even if no reads inform that site for a given individual. However, this is currently the only way I can find to take advantage of read-backed phasing and get the phased calls into alignment format. Freebayes allows output of invariant and variant sites, which can then easily be used to produce complete alignments. However, the phasing options in Freebayes are much more limited, and there is no obvious way to use Freebayes to output data once SNPs have been phased in GATK. If you want to go the Freebayes route, a script to obtain alignments from .vcf Freebayes output is [here](https://github.com/mgharvey/misc_python/blob/master/bin/freebayes_vcf2fa.py). This part of the pipeline could obviously use some improvement!
 
@@ -352,7 +352,7 @@ Then do the same thing for individual 2 (and any additional individuals).
 
 The final argument ("1") above filters out any alleles not supported by a particular number of reads. This can be increased in order to set a hard filter on the minimum number of reads for allele calls (generally not recommended).
 
-### 24.	Collate sequences from all individuals into files by UCE (custom script)
+### 24.	Collate sequences from all individuals into files by UCE (seqcap_pop script)
 
 ```
 python collate_sample_fastas_GATK.py \
@@ -371,7 +371,7 @@ python run_mafft.py \
 	/path/to/12_raw-alignments/Genus_species/
 ```
 
-### 26.	Process the alignments (custom script)
+### 26.	Process the alignments (seqcap_pop script)
 
 This makes phylip alignments from the raw fasta files from MAFFT.
 
