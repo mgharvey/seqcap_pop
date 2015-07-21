@@ -385,12 +385,24 @@ python process_mafft_alignments_GATK.py \
 
 For programs that don't accept .vcf files of SNPs or phylip sequence alignments, there are some additional scripts in the "bin" folder that permit data format conversion (I will be adding more here as I write them):
 
-- **structure_from_vcf.py** should produce files of all SNPs containing linkage information for use in STRUCTURE and fastSTRUCTURE.
+- **structure_from_vcf.py** should produce files of all SNPs containing linkage and phasing information for use in STRUCTURE.
 
 ```
 python structure_from_vcf.py \
 	/path/to/8_GATK/Genus_species_SNPs_phased.vcf \
 	/path/to/desired/output/directory/Genus_species_STRUCTURE.txt
+```
+
+- **faststructure_from_vcf.py** should produce files of all SNPs, the first SNP per locus, or a random SNP from each locus for use in fastSTRUCTURE.
+
+```
+python faststructure_from_vcf.py \
+	/path/to/8_GATK/Genus_species_SNPs_phased.vcf \
+	/path/to/desired/output/directory/ \
+	Genus_species \
+	--all \
+	--first \
+	--random
 ```
 
 - **gphocs_from_phy.py** reformats alignments for input into [G-PhoCS](http://compgen.bscb.cornell.edu/GPhoCS/).
