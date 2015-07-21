@@ -139,16 +139,16 @@ def main():
 	# Make output
 	if args.all == True:
 		allfile = open("{0}{1}_STRUCTURE_all.txt".format(args.out_dir, args.prefix), 'wb')
-		for all_site in all_sites:
-			allfile.write("{0}\t".format(all_site))
-		allfile.write("\n")		
+		#for all_site in all_sites:
+		#	allfile.write("{0}\t".format(all_site))
+		#allfile.write("\n")		
 		for i, individual in enumerate(individuals):
-			allfile.write("{0}\t".format(individual))
+			allfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
 			for genotyped_locus in all_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				allfile.write("{0}\t".format(ind_genotype[0]))
 			allfile.write("\n")		
-			allfile.write("{0}\t".format(individual))
+			allfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
 			for genotyped_locus in all_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				allfile.write("{0}\t".format(ind_genotype[1]))
@@ -157,16 +157,16 @@ def main():
 			
 	if args.first == True:
 		firstfile = open("{0}{1}_STRUCTURE_first.txt".format(args.out_dir, args.prefix), 'wb')
-		for first_site in first_sites:
-			firstfile.write("{0}\t".format(first_site))
-		firstfile.write("\n")		
+		#for first_site in first_sites:
+		#	firstfile.write("{0}\t".format(first_site))
+		#firstfile.write("\n")		
 		for i, individual in enumerate(individuals):
-			firstfile.write("{0}\t".format(individual))
+			firstfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
 			for genotyped_locus in first_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				firstfile.write("{0}\t".format(ind_genotype[0]))
 			firstfile.write("\n")		
-			firstfile.write("{0}\t".format(individual))
+			firstfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
 			for genotyped_locus in first_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				firstfile.write("{0}\t".format(ind_genotype[1]))
@@ -175,16 +175,16 @@ def main():
 
 	if args.random == True:
 		randomfile = open("{0}{1}_STRUCTURE_random.txt".format(args.out_dir, args.prefix), 'wb')
-		for random_site in random_sites:
-			randomfile.write("{0}\t".format(random_site))
-		randomfile.write("\n")		
+		#for random_site in random_sites:
+		#	randomfile.write("{0}\t".format(random_site))
+		#randomfile.write("\n")		
 		for i, individual in enumerate(individuals):
-			randomfile.write("{0}\t".format(individual))
+			randomfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
 			for genotyped_locus in random_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				randomfile.write("{0}\t".format(ind_genotype[0]))
 			randomfile.write("\n")		
-			randomfile.write("{0}\t".format(individual))
+			randomfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
 			for genotyped_locus in random_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				randomfile.write("{0}\t".format(ind_genotype[1]))
