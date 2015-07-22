@@ -138,7 +138,7 @@ def main():
 					
 	# Make output
 	if args.all == True:
-		allfile = open("{0}{1}_STRUCTURE_all.txt".format(args.out_dir, args.prefix), 'wb')
+		allfile = open("{0}{1}_STRUCTURE_all.str".format(args.out_dir, args.prefix), 'wb')
 		#for all_site in all_sites:
 		#	allfile.write("{0}\t".format(all_site))
 		#allfile.write("\n")		
@@ -156,7 +156,7 @@ def main():
 		print "{0} SNPs in all-SNPs file".format(len(all_genotype_matrix))
 			
 	if args.first == True:
-		firstfile = open("{0}{1}_STRUCTURE_first.txt".format(args.out_dir, args.prefix), 'wb')
+		firstfile = open("{0}{1}_STRUCTURE_first.str".format(args.out_dir, args.prefix), 'wb')
 		#for first_site in first_sites:
 		#	firstfile.write("{0}\t".format(first_site))
 		#firstfile.write("\n")		
@@ -174,7 +174,7 @@ def main():
 		print "{0} SNPs in first-SNPs file".format(len(first_genotype_matrix))
 
 	if args.random == True:
-		randomfile = open("{0}{1}_STRUCTURE_random.txt".format(args.out_dir, args.prefix), 'wb')
+		randomfile = open("{0}{1}_STRUCTURE_random.str".format(args.out_dir, args.prefix), 'wb')
 		#for random_site in random_sites:
 		#	randomfile.write("{0}\t".format(random_site))
 		#randomfile.write("\n")		
