@@ -103,7 +103,7 @@ def main():
 	k = 0
 	seq = None
 	for sequence in sequences: # For each line in sequence file
-		if sequence.startswith('>') or if sequence == sequences[-1]: # If header			
+		if sequence.startswith('>'): # If header			
 			parts = sequence.split('|')
 			firstpart = parts[0].split('>')
 			locus = str(firstpart[1]) # Get locus name
@@ -179,7 +179,68 @@ def main():
 				seq = seq + list(sequence.lstrip().rstrip())
 			else:
 				seq = list(sequence.lstrip().rstrip())
-		i += 1
+		i += 1		
+	seqAlist = copy.deepcopy(seq)
+	seqBlist = copy.deepcopy(seq)
+	prev = 'FALSE' 
+	for phasing in phasings:
+		parts = phasing.split()
+		firstpart = parts[0].split('|')
+		phaselocus = firstpart[0]
+		if phaselocus == prev_locus: # If phase file locus same as sequence locus
+			parts = phasing.split()
+			pre_alleles = parts[3].split('/')
+			depths = parts[6].split(',')
+			alleles = list()
+			for j, pre_allele in enumerate(pre_alleles):	
+				if pre_allele != '.':
+					if int(depths[j]) >= args.depth_filter:
+						alleles.append(pre_allele)
+						k += 1
+				elif pre_allele == '.':
+					alleles.append(pre_allele)	
+			hp = parts[5]
+			if len(set(alleles)) > 1: # Is the site biallelic for this individual?
+				if prev == 'TRUE': # If a biallelic site already exists at this locus
+					if not hp == "NA": # If it was accurately phased
+						print "Some phased SNPs at this locus"
+						phasing = hp.split(',') 
+						if phasing[0].endswith("-1"):
+							seqAlist[int(parts[1])-1] = alleles[0] # Just insert alleles
+							seqBlist[int(parts[1])-1] = alleles[1]
+						elif phasing[0].endswith("-2"):
+							seqAlist[int(parts[1])-1] = alleles[1] # Switch alleles
+							seqBlist[int(parts[1])-1] = alleles[0]											
+					elif hp == "NA": # If it was not phased
+						print "Some unphased SNPs at this locus"
+						if args.resolve: # Are we randomly resolving?
+							rand = random.randint(0,1)
+							if rand == 0:
+								other = 1
+							elif rand == 1:
+								other = 0
+							seqAlist[int(parts[1])-1] = alleles[rand]
+							seqBlist[int(parts[1])-1] = alleles[other]	
+						else: # If not randomly resolving, insert ambiguity code
+							base = unphase(alleles)
+							seqAlist[int(parts[1])-1] = base
+							seqBlist[int(parts[1])-1] = base			
+				elif prev == 'FALSE': # If no biallelic site already exists
+					seqAlist[int(parts[1])-1] = alleles[0] # Just insert alleles
+					seqBlist[int(parts[1])-1] = alleles[1]	
+				prev = 'TRUE' # Register that a biallelic SNP has been found at this locus
+			elif len(set(alleles)) == 1: # If the site is monomorphic for this individual				
+				seqAlist[int(parts[1])-1] = alleles[0].replace('.','N') # Just insert alleles (replace errors with 'N')
+				seqBlist[int(parts[1])-1] = alleles[0].replace('.','N')							
+	outfile.write("{0}a".format(prev_seq))
+	outfile.write("\n")
+	outfile.write(''.join(seqAlist))
+	outfile.write("\n")		
+	outfile.write("{0}b".format(prev_seq))
+	outfile.write("\n")
+	outfile.write(''.join(seqBlist))
+	outfile.write("\n")
+	print locus
 	seqfile.close()
 	phasefile.close()
 	outfile.close()
