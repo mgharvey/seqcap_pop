@@ -106,7 +106,7 @@ def main():
 		if sequence.startswith('>'): # If header			
 			parts = sequence.split('|')
 			firstpart = parts[0].split('>')
-			locus = str(firstpart[1]) # Get locus name
+			locus = str(firstpart[1]).rstrip() # Get locus name
 			if i != 0:	# If not the first sequence
 				seqAlist = copy.deepcopy(seq)
 				seqBlist = copy.deepcopy(seq)
