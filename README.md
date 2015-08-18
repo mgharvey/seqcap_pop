@@ -1,9 +1,7 @@
 INTRODUCTION
 -------
 
-seqcap_pop is a series of commands and scripts for processing sequence capture data from population-level samples using tools within the [Phyluce](http://phyluce.readthedocs.org/en/latest/index.html#) package (Faircloth 2015). 
-
-In addition to the pre-existing code from Phyluce and associated tools, we include additional scripts in the "bin" folder that were authored by Michael Harvey, Brant Faircloth, and Graham Derryberry.
+seqcap_pop is a series of commands and scripts we have been using for processing sequence capture data from population-level samples using tools within the [Phyluce](http://phyluce.readthedocs.org/en/latest/index.html#) package (Faircloth 2015). This pipeline includes some additional scripts not available from Phyluce and dependencies (in the "bin" folder).
 
 LICENSE
 -------
@@ -14,7 +12,11 @@ for more information.
 CITATION
 --------
 
-If you use scripts from this repository for your own research, please provide the link to this software repository in your manuscript:
+If you use this pipeline for your own research, please cite Phyluce following the instructions here: 
+
+	http://phyluce.readthedocs.org/en/latest/citing.html
+
+And provide a link to this repository for the additional scripts:
 
     https://github.com/mgharvey/seqcap_pop
 
