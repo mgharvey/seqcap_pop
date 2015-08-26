@@ -45,7 +45,7 @@ def main():
 	out.write("{0}\n".format(len(files)))
 	for i, file in enumerate(files):
 		print "{0}{1}".format(args.in_dir, file)
-		alignment = AlignIO.read("{0}{1}".format(args.in_dir, file), "phylip-relaxed")
+		alignment = AlignIO.read("{0}/{1}".format(args.in_dir, file), "phylip-relaxed")
 		out.write("locus{0} {1} {2}\n".format(i+1, len(alignment), alignment.get_alignment_length()))
 		for record in alignment:
 			out.write("{0} {1}\n".format(record.id, record.seq))	
