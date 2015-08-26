@@ -403,6 +403,18 @@ python faststructure_from_vcf.py \
 	--random
 ```
 
+- **adegenet_from_vcf.py** should produce files of all SNPs, the first SNP per locus, or a random SNP from each locus for use in the R package adegenet (which can do PCAs, discriminant analysis of principle componenents, etc.).
+
+```
+python adegenet_from_vcf.py \
+	/path/to/8_GATK/Genus_species_SNPs_phased.vcf \
+	/path/to/desired/output/directory/ \
+	Genus_species \
+	--all \
+	--first \
+	--random
+```
+
 - **gphocs_from_phy.py** reformats alignments for input into [G-PhoCS](http://compgen.bscb.cornell.edu/GPhoCS/).
 
 ```
