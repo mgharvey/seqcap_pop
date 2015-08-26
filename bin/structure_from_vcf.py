@@ -4,6 +4,7 @@
 Name: structure_from_vcf.py
 Author: Michael G. Harvey
 Date: 16 July 2015
+
 Description: This script produces a STRUCTURE input file from a vcf file output using GATK
 using the seqcap_pop pipeline (https://github.com/mgharvey/seqcap_pop). It includes linkage
 information (the distance between SNPs at the same locus) and phase probabilities in cases
@@ -12,7 +13,9 @@ the phase is correct relative to the previous site (use set MARKOVPHASE=1) for a
 individual. Sometimes STRUCTURE doesn't recognize the newline characters from this script, 
 but if you copy and paste the text from the file into an existing text file this often 
 corrects the issue.
+
 Usage: python structure_from_vcf.py in_file out_file
+
 """
 
 import os

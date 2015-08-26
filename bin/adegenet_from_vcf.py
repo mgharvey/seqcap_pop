@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 
 """
-Name: faststructure_from_vcf.py
+Name: adegenet_from_vcf.py
 Author: Michael G. Harvey
 Date: 21 July 2015
 
 Description: This script produces a an input file in the STRUCTURE format accepted by 
-fastSTRUCTURE from a vcf file output using GATK with the seqcap_pop pipeline (https://github.com/mgharvey/seqcap_pop). Unlike the structure_from_vcf script, this 
-script DOES NOT include linkage information (the distance between SNPs at the same locus) 
-and phase probabilities, because these are not allowed by fastSTRUCTURE. It may be 
-preferable to output rather than all SNPs, only the first SNP or a random SNP from each
-locus. These subsets can be output using the "--first" and "--random" arguments.
+adegenet from a vcf file output using GATK with the seqcap_pop pipeline (https://github.com/mgharvey/seqcap_pop). It may be preferable to output rather than all 
+SNPs, only the first SNP or a random SNP from each locus. These subsets can be output 
+using the "--first" and "--random" arguments.
 
-Usage: python faststructure_from_vcf.py in_file out_dir Genus_species --all --first --random
+Usage: python adegenet_from_vcf.py in_file out_dir Genus_species --all --first --random
 
 """
 
@@ -94,7 +92,7 @@ def main():
 							if '.' in ind:
 								genotypes.append(["-9", "-9"])					
 							else:
-								genotypes.append([ind[0], ind[1]])
+								genotypes.append([int(ind[0])+1, int(ind[1])+1])
 						all_genotype_matrix.append(genotypes)
 				
 				# If first
@@ -105,7 +103,7 @@ def main():
 						if '.' in ind:
 							genotypes.append(["-9", "-9"])					
 						else:
-							genotypes.append([ind[0], ind[1]])
+							genotypes.append([int(ind[0])+1, int(ind[1])+1])
 					first_genotype_matrix.append(genotypes)
 					first_sites.append(all_sites[(site_index-(len(sites)))])
 
@@ -118,7 +116,7 @@ def main():
 						if '.' in ind:
 							genotypes.append(["-9", "-9"])					
 						else:
-							genotypes.append([ind[0], ind[1]])
+							genotypes.append([int(ind[0])+1, int(ind[1])+1])
 					random_genotype_matrix.append(genotypes)
 					random_sites.append(all_sites[(site_index-(len(sites))+rand)])
 
@@ -138,17 +136,17 @@ def main():
 					
 	# Make output
 	if args.all == True:
-		allfile = open("{0}{1}_STRUCTURE_all.str".format(args.out_dir, args.prefix), 'wb')
+		allfile = open("{0}{1}_adegenet_all.stru".format(args.out_dir, args.prefix), 'wb')
 		#for all_site in all_sites:
 		#	allfile.write("{0}\t".format(all_site))
 		#allfile.write("\n")		
 		for i, individual in enumerate(individuals):
-			allfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
+			allfile.write("{0}\t".format(individual))
 			for genotyped_locus in all_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				allfile.write("{0}\t".format(ind_genotype[0]))
 			allfile.write("\n")		
-			allfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
+			allfile.write("{0}\t".format(individual))
 			for genotyped_locus in all_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				allfile.write("{0}\t".format(ind_genotype[1]))
@@ -156,17 +154,17 @@ def main():
 		print "{0} SNPs in all-SNPs file".format(len(all_genotype_matrix))
 			
 	if args.first == True:
-		firstfile = open("{0}{1}_STRUCTURE_first.str".format(args.out_dir, args.prefix), 'wb')
+		firstfile = open("{0}{1}_adegenet_first.stru".format(args.out_dir, args.prefix), 'wb')
 		#for first_site in first_sites:
 		#	firstfile.write("{0}\t".format(first_site))
 		#firstfile.write("\n")		
 		for i, individual in enumerate(individuals):
-			firstfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
+			firstfile.write("{0}\t".format(individual))
 			for genotyped_locus in first_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				firstfile.write("{0}\t".format(ind_genotype[0]))
 			firstfile.write("\n")		
-			firstfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
+			firstfile.write("{0}\t".format(individual))
 			for genotyped_locus in first_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				firstfile.write("{0}\t".format(ind_genotype[1]))
@@ -174,17 +172,17 @@ def main():
 		print "{0} SNPs in first-SNPs file".format(len(first_genotype_matrix))
 
 	if args.random == True:
-		randomfile = open("{0}{1}_STRUCTURE_random.str".format(args.out_dir, args.prefix), 'wb')
+		randomfile = open("{0}{1}_adegenet_random.stru".format(args.out_dir, args.prefix), 'wb')
 		#for random_site in random_sites:
 		#	randomfile.write("{0}\t".format(random_site))
 		#randomfile.write("\n")		
 		for i, individual in enumerate(individuals):
-			randomfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
+			randomfile.write("{0}\t".format(individual))
 			for genotyped_locus in random_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				randomfile.write("{0}\t".format(ind_genotype[0]))
 			randomfile.write("\n")		
-			randomfile.write("{0}\t.\t.\t.\t.\t.\t".format(individual))
+			randomfile.write("{0}\t".format(individual))
 			for genotyped_locus in random_genotype_matrix:	
 				ind_genotype = genotyped_locus[i]		
 				randomfile.write("{0}\t".format(ind_genotype[1]))
