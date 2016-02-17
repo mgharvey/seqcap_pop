@@ -224,6 +224,8 @@ java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     
 ### 15.	Call SNPs (GATK)
 
+Here I have ploidy set to 2. This can be problematic when some data comes from the sex chromosome(s) and we have heterogametic individuals. It might make sense to map loci to an existing genome, and either filter out sex-linked loci, or bring them through this part of the pipeline separately from autosomal loci. Another problem, at least in birds, is that the W chromosome (present only in females) is not always very degenerate, and retains some of the conserved loci we are targeting on the Z chromosome. This results in sequence contamination from the W chromosome in some of the sequence alignments with female individuals. These can be filtered out after the fact (by looking for female heterozygotes at Z-linked loci), but there may be better solutions. More work needed here.
+
 ```
 java -Xmx2g -jar ~/anaconda/GenomeAnalysisTK-3.3-0/GenomeAnalysisTK.jar \
     -T UnifiedGenotyper \
