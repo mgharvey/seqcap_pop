@@ -12,7 +12,11 @@ for more information.
 CITATION
 --------
 
-If you use this pipeline for your own research, please cite Phyluce following the instructions [here](http://phyluce.readthedocs.org/en/latest/citing.html) and provide a link to this repository for the additional scripts:
+If you use this pipeline for your own research, please cite Phyluce following the instructions [here](http://phyluce.readthedocs.org/en/latest/citing.html) and:
+
+* Harvey MG, Smith BT, Glenn TC, Faircloth BC, Brumfield RT. In press. **Sequence capture versus restriction site associated DNA sequencing for shallow systematics**. *Systematic Biology*. 
+    
+You can also provide a link to this repository if desired:
 
     https://github.com/mgharvey/seqcap_pop
 
