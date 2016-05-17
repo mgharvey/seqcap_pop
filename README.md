@@ -1,7 +1,7 @@
 INTRODUCTION
 -------
 
-seqcap_pop is a series of commands and scripts we have been using for processing sequence capture data from population-level samples using tools within the [Phyluce](http://phyluce.readthedocs.org/en/latest/index.html#) package (Faircloth 2015). This pipeline includes some additional scripts not available from Phyluce and its dependencies (in the "bin" folder).
+seqcap_pop is a series of commands and scripts we have been using for processing sequence capture data from population-level samples using tools within the [Phyluce](http://phyluce.readthedocs.org/en/latest/index.html#) package (Faircloth 2015). This pipeline includes some additional scripts not available from Phyluce and its dependencies (in the "bin" folder). Also, it requires GATK v3 or above, which may not be included in the current Phyluce release.
 
 LICENSE
 -------
@@ -347,8 +347,7 @@ Because GATK does not output sequences or SNP calls for invariant sites, we need
 python add_phased_snps_to_seqs_filter.py \
 	/path/to/4_match-contigs-to-probes/Genus_species.fasta \
 	/path/to/9_SNP-tables/Genus_species_1_SNPs_phased-table.txt \
-	/path/to/10_sequences/Genus_species \
-	Genus_species_1_sequences.txt \
+	/path/to/10_sequences/Genus_species/Genus_species_1_sequences.txt \
 	1
 ```
 
