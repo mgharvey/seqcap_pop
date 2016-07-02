@@ -6,15 +6,14 @@ seqcap_pop is a series of commands and scripts we have been using for processing
 LICENSE
 -------
 
-The code within this repository is available under a 3-clause BSD license. See the License.txt file 
-for more information.
+The code within this repository is available under a 3-clause BSD license. See the License.txt file for more information.
 
 CITATION
 --------
 
 If you use this pipeline for your own research, please cite Phyluce following the instructions [here](http://phyluce.readthedocs.org/en/latest/citing.html) and:
 
-* Harvey MG, Smith BT, Glenn TC, Faircloth BC, Brumfield RT. In press. **Sequence capture versus restriction site associated DNA sequencing for shallow systematics**. *Systematic Biology*. 
+* Harvey MG, Smith BT, Glenn TC, Faircloth BC, Brumfield RT. In press. **Sequence capture versus restriction site associated DNA sequencing for shallow systematics**. *Systematic Biology* doi:10.1093/sysbio/syw036. 
     
 You can also provide a link to this repository if desired:
 
