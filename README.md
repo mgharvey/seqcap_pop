@@ -11,7 +11,7 @@ The code within this repository is available under a 3-clause BSD license. See t
 CITATION
 --------
 
-If you use this pipeline for your own research, please cite Phyluce following the instructions [here](http://phyluce.readthedocs.org/en/latest/citing.html) and:
+If you use this pipeline for your own research, please cite Phyluce following the instructions [here](http://phyluce.readthedocs.org/en/latest/citing.html) and cite:
 
 * Harvey MG, Smith BT, Glenn TC, Faircloth BC, Brumfield RT. In press. **Sequence capture versus restriction site associated DNA sequencing for shallow systematics**. *Systematic Biology* doi:10.1093/sysbio/syw036. 
     
