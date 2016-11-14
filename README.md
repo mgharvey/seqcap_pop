@@ -13,7 +13,7 @@ CITATION
 
 If you use this pipeline for your own research, please cite Phyluce following the instructions [here](http://phyluce.readthedocs.org/en/latest/citing.html) and cite:
 
-* Harvey MG, Smith BT, Glenn TC, Faircloth BC, Brumfield RT. In press. **Sequence capture versus restriction site associated DNA sequencing for shallow systematics**. *Systematic Biology* doi:10.1093/sysbio/syw036. 
+* Harvey MG, Smith BT, Glenn TC, Faircloth BC, Brumfield RT. 2016. **Sequence capture versus restriction site associated DNA sequencing for shallow systematics**. *Systematic Biology* 65: 910-924. 
     
 You can also provide a link to this repository if desired:
 
