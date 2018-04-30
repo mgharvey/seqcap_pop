@@ -51,7 +51,7 @@ illumiprocessor --input /path/to/1_raw-reads --output /path/to/2_clean-reads \
 
 ### 2.	Assemble reads into contigs (e.g., VelvetOptimiser)
 
-For population-level studies, I will typically use multiple individuals to make my assembly. This requires inputting reads from all of the individuals into the assembler simultaneously. You could also make your assembly from just a single individual (perhaps the one with the most reads, or the one which provides the best reference for some biological reason). More individuals require more memory (I typically have to run this step on high-memory cluster nodes). It may be worth trying different strategies for reference assembly and comparing your assemblies to determine which method produces the best results (most contigs mapping to probes, longest contigs, etc.).
+In the past, I would combine reads from all of my individuals to make a consensus reference assembly (or, occasionally, use reads from the one individual with the highest quality data). Recently, I have been assembling the reads within each individual, then selecting the best contig for each target locus from among all the individual assemblies. I hope to find time to implement my own code for doing this, but I have been using code from Sonal Singhal's excellent Squamate Conserved Loci (SqCL) pipeline in the meantime. See the SqCL [Github repository](https://github.com/singhal/SqCL) and [paper](https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.12681) for details.
 
 Any of various assembly programs can be used for this step (see Phyluce documentation). I typically use VelvetOptimiser, which is not part of Phyluce, but can be obtained [here](http://bioinformatics.net.au/software.velvetoptimiser.shtml). An example VelvetOptimiser command is:
 
