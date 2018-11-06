@@ -55,7 +55,7 @@ def main():
 		lines = open("{0}/{1}".format(args.in_dir, file), 'r')
 		for line in lines:
 			if line.lstrip().startswith(">"):
-				header = re.split(">|\|", line)
+				header = re.split(">|\||\s", line)
 				uce = header[1]
 				if uce not in uces:
 					uces.append(uce)
@@ -68,7 +68,7 @@ def main():
 			lines = open("{0}/{1}".format(args.in_dir, file), 'r')
 			for line in lines:
 				if line.lstrip().startswith(">"):
-					header = re.split(">|\|", line)
+					header = re.split(">|\||\s", line)
 					this_uce = header[1]
 					if this_uce == uce:
 						uce_seq = next(lines)

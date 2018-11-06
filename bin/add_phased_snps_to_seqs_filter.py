@@ -12,6 +12,7 @@ Date: 1 June 2014
 
 import os
 import sys
+import re
 import random
 import argparse
 import copy
@@ -104,7 +105,7 @@ def main():
 	seq = None
 	for sequence in sequences: # For each line in sequence file
 		if sequence.startswith('>'): # If header			
-			parts = sequence.split('|')
+			parts = re.split('\||\s', sequence)
 			firstpart = parts[0].split('>')
 			locus = str(firstpart[1]).rstrip() # Get locus name
 			if i != 0:	# If not the first sequence
